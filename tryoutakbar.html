@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBT Try Out 1 - Olimpiade Geometri</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [["$", "$"], ["\(", "\)"]],
+                displayMath: [["$$", "$$"], ["\[", "\]"]],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ["script", "noscript", "style", "textarea", "pre"]
+            }
+        };
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-user-select: none; }
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        .watermark {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.08;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: space-around;
+            justify-content: space-around;
+            overflow: hidden;
+        }
+        .watermark span { transform: rotate(-30deg); white-space: nowrap; margin: 40px; }
+        #security-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+        #security-overlay.active { display: flex; }
+        #security-overlay h2 { color: #e74c3c; font-size: 28px; margin-bottom: 20px; }
+        #security-overlay p { color: #ecf0f1; font-size: 16px; margin-bottom: 30px; }
+        .btn { background: #e74c3c; color: white; border: none; padding: 12px 30px; font-size: 16px; border-radius: 8px; cursor: pointer; }
+        .btn:hover { background: #c0392b; }
+        header {
+            background: rgba(0,0,0,0.3);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e74c3c;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .timer { font-size: 24px; font-weight: bold; color: #e74c3c; font-family: monospace; }
+        .timer.warning { color: #f39c12; animation: pulse 1s infinite; }
+        .timer.danger { color: #e74c3c; animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .user-info { font-size: 14px; color: #bdc3c7; }
+        main { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+        .question-box {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .question-number {
+            background: #e74c3c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .question-text { font-size: 18px; line-height: 1.6; margin-bottom: 20px; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        .option {
+            background: rgba(255,255,255,0.08);
+            border: 2px solid rgba(255,255,255,0.1);
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .option:hover { background: rgba(255,255,255,0.15); border-color: #3498db; }
+        .option.selected { background: rgba(52, 152, 219, 0.3); border-color: #3498db; }
+        .option-letter {
+            background: rgba(255,255,255,0.1);
+            width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .option.selected .option-letter { background: #3498db; }
+        .input-answer {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            outline: none;
+        }
+        .input-answer:focus { border-color: #3498db; }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        .nav-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-prev { background: rgba(255,255,255,0.1); color: #fff; }
+        .btn-prev:hover:not(:disabled) { background: rgba(255,255,255,0.2); }
+        .btn-next { background: #3498db; color: #fff; }
+        .btn-next:hover:not(:disabled) { background: #2980b9; }
+        .btn-submit { background: #e74c3c; color: #fff; }
+        .btn-submit:hover { background: #c0392b; }
+        .question-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        .q-nav-btn {
+            width: 40px; height: 40px;
+            border: 2px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .q-nav-btn:hover { border-color: #3498db; }
+        .q-nav-btn.answered { background: #27ae60; border-color: #27ae60; }
+        .q-nav-btn.current { background: #3498db; border-color: #3498db; }
+        .q-nav-btn.flagged { border-color: #f39c12; }
+        .flag-btn {
+            background: rgba(243, 156, 18, 0.2);
+            border: 1px solid #f39c12;
+            color: #f39c12;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .flag-btn.flagged { background: #f39c12; color: #fff; }
+        #result-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        #result-modal.active { display: flex; }
+        .result-box {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 2px solid #e74c3c;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        .result-box h2 { color: #e74c3c; margin-bottom: 20px; font-size: 28px; }
+        .score { font-size: 64px; font-weight: bold; color: #f39c12; margin: 20px 0; }
+        .result-detail { color: #bdc3c7; margin-bottom: 20px; line-height: 1.8; }
+        #access-denied {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #1a1a2e;
+            z-index: 99999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+        #access-denied.active { display: flex; }
+        .flash-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 9997;
+            transition: opacity 0.1s;
+        }
+        .violation-count {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            z-index: 101;
+            display: none;
+        }
+        .violation-count.active { display: block; }
+        .type-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .type-pg { background: #3498db; }
+        .type-isian { background: #9b59b6; }
+    </style>
+<base target="_blank">
+<base target="_blank">
+</head>
+<body>
+    <div class="watermark" id="watermark"></div>
+    <div class="flash-overlay" id="flash-overlay"></div>
+    <div class="violation-count" id="violation-count">Pelanggaran: 0/2</div>
+
+    <div id="access-denied">
+        <h1 style="color: #e74c3c; font-size: 48px; margin-bottom: 20px;">&#9888; Akses Ditolak</h1>
+        <p style="color: #bdc3c7; font-size: 18px; max-width: 600px;">
+            Anda harus login melalui halaman utama terlebih dahulu.<br>
+            Token tidak valid atau sudah expired.
+        </p>
+        <button class="btn" style="margin-top: 30px;" onclick="window.location.href='https://farras-tbz.github.io/SOAL-TRY-OUT-1/'">
+            Kembali ke Halaman Login
+        </button>
+    </div>
+
+    <div id="security-overlay">
+        <h2>&#9888; Pelanggaran Keamanan Terdeteksi!</h2>
+        <p id="security-msg">Anda melakukan pelanggaran. Ujian akan dikunci setelah 2 kali pelanggaran.</p>
+        <p id="security-count">Pelanggaran: <span id="v-count">0</span>/2</p>
+        <button class="btn" id="security-btn" onclick="dismissSecurity()">Saya Mengerti</button>
+    </div>
+
+    <div id="result-modal">
+        <div class="result-box">
+            <h2>Try Out 1 Selesai!</h2>
+            <div class="score" id="final-score">0</div>
+            <div class="result-detail" id="result-detail"></div>
+            <button class="btn" onclick="finishExam()">Selesai</button>
+        </div>
+    </div>
+
+    <header id="main-header" style="display:none;">
+        <div>
+            <div style="font-size: 20px; font-weight: bold;">Try Out 1 - Geometri</div>
+            <div class="user-info" id="user-info">Peserta: -</div>
+        </div>
+        <div class="timer" id="timer">02:00:00</div>
+    </header>
+
+    <main id="main-content" style="display:none;">
+        <div class="question-nav" id="question-nav"></div>
+        <div id="question-container"></div>
+        <div class="nav-buttons">
+            <button class="nav-btn btn-prev" id="btn-prev" onclick="prevQuestion()" disabled>Sebelumnya</button>
+            <button class="nav-btn btn-next" id="btn-next" onclick="nextQuestion()">Selanjutnya</button>
+            <button class="nav-btn btn-submit" id="btn-submit" onclick="submitExam()" style="display:none;">Kumpulkan</button>
+        </div>
+    </main>
+
+    <script>
+
+    // ==================== KONFIGURASI ====================
+    const EXAM_DURATION = 7200;
+    const MAX_VIOLATIONS = 2;
+    const TOKEN_EXPIRY = 5 * 60 * 1000;
+
+    // ==================== DATABASE SOAL TO1 GEOMETRI ====================
+    const questions = [
+        // === PILIHAN GANDA (1-10) - Hasil Non-Bulat ===
+        {
+            id: 1,
+            type: "pg",
+            question: "Diberikan segitiga siku-siku $ABC$ dengan $\angle B = 90^{\circ}$, panjang $AB = 7$, dan $BC = 6$. Titik $D$ adalah titik tengah $BC$ dan titik $E$ adalah titik tengah $AC$. Garis $AD$ dan $BE$ berpotongan di titik $P$. Jika ditarik sebuah garis lurus dari titik $C$ melalui $P$ hingga memotong sisi $AB$ di titik $F$, tentukan panjang ruas garis $DF$.",
+            options: ["$3$", "$4$", "$\dfrac{\sqrt{85}}{2}$", "$5$", "$\dfrac{\sqrt{89}}{2}$"],
+            correct: 2
+        },
+        {
+            id: 2,
+            type: "pg",
+            question: "Pada segitiga $PQR$ siku-siku di $Q$, dibuat sebuah lingkaran dengan diameter sisi miring $PR$. Lingkaran tersebut memotong sisi tegak $PQ$ di titik $A$ dan memotong sisi alas $QR$ di titik $B$. Jika diketahui panjang $PQ = 8$ dan $QR = 10$, tentukan panjang ruas garis $AB$.",
+            options: ["$10$", "$12$", "$2\sqrt{41}$", "$13$", "$\sqrt{160}$"],
+            correct: 2
+        },
+        {
+            id: 3,
+            type: "pg",
+            question: "Segitiga $ABC$ memiliki daerah alas $BC = 10$ dan garis tinggi dari puncak $A$ ke alas $BC$ sepanjang $t = 12$. Sebuah garis lurus $XY$ dibuat sejajar dengan alas $BC$ (dengan titik $X$ pada sisi $AB$ dan titik $Y$ pada sisi $AC$) sehingga jarak garis $XY$ ke titik puncak $A$ adalah $4$. Tentukan keliling dari persegi panjang berukuran terbesar yang dapat dibuat di dalam daerah segitiga kecil $AXY$.",
+            options: ["$6$", "$\dfrac{20}{3}$", "$\dfrac{22}{3}$", "$8$", "$\dfrac{25}{3}$"],
+            correct: 2
+        },
+        {
+            id: 4,
+            type: "pg",
+            question: "Diberikan segitiga lancip $ABC$ dengan panjang sisi $a$, $b$, $c$. Garis tinggi dari $A$, $B$, dan $C$ berturut-turut memotong sisi $BC$, $CA$, dan $AB$ di titik $D$, $E$, dan $F$. Jika diketahui $\angle A = 60^{\circ}$ dan perbandingan luas segitiga $DEF$ dan segitiga $ABC$ adalah $3 : 16$, maka nilai dari $\cos B \cos C$ adalah $\dots$",
+            options: ["$\dfrac{1}{8}$", "$\dfrac{1}{4}$", "$\dfrac{3}{16}$", "$\dfrac{1}{2}$", "$\dfrac{5}{16}$"],
+            correct: 2
+        },
+        {
+            id: 5,
+            type: "pg",
+            question: "Diberikan segitiga $ABC$ dengan diameter lingkaran luar $d = 10$. Jika panjang sisi $a = 6$ dan $b = 8$, serta segitiga tersebut bukan segitiga siku-siku, hitunglah nilai dari nilai mutlak $a\cos A + b\cos B + c\cos C$.",
+            options: ["$2$", "$\dfrac{12}{5}$", "$\dfrac{336}{125}$", "$3$", "$\dfrac{14}{5}$"],
+            correct: 2
+        },
+        {
+            id: 6,
+            type: "pg",
+            question: "Diketahui trapesium $ABCD$ dengan $AB \parallel CD$. Titik $E$ dan $F$ berturut-turut terletak pada $AD$ dan $BC$ sehingga $EF \parallel AB$. Jika perbandingan luas $ABFE$ dan $EFCD$ adalah $1 : 1$ (artinya $EF$ membagi dua luas trapesium sama besar), serta $AB = 9$ dan $CD = 7$, berapakah panjang $EF$?",
+            options: ["$7$", "$8$", "$\sqrt{65}$", "$9$", "$\dfrac{17}{2}$"],
+            correct: 2
+        },
+        {
+            id: 7,
+            type: "pg",
+            question: "Diberikan segitiga $ABC$ dengan lingkaran yang menyinggung $AB$ di $P$ dan menyinggung $AC$ di $Q$. Lingkaran tersebut memotong sisi $BC$ di $D$ dan $E$. Jika panjang $AB = 7$, $AC = 8$, dan panjang segmen singgung $AP = AQ = 3$, serta $BD = 2$, berapakah panjang segmen $CE$?",
+            options: ["$2$", "$\sqrt{34} - 3$", "$3$", "$4$", "$\sqrt{34} - 2$"],
+            correct: 1
+        },
+        {
+            id: 8,
+            type: "pg",
+            question: "Diberikan persegi $ABCD$ dengan panjang sisi $2$. Titik $K$ pada sisi $AB$ dan $L$ pada sisi $AD$ sehingga $\angle KCL = 45^{\circ}$. Jika panjang $AK = 1$, tentukan panjang $AL$.",
+            options: ["$1$", "$\dfrac{4}{3}$", "$\dfrac{3}{2}$", "$\dfrac{5}{3}$", "$2$"],
+            correct: 1
+        },
+        {
+            id: 9,
+            type: "pg",
+            question: "Diberikan segitiga $ABC$ dengan lingkaran luar $\Gamma$. Titik $M$ adalah titik tengah $BC$. Sebuah garis melalui $M$ memotong sisi $AB$ di $P$ dan memotong $\Gamma$ lagi di $X$. Jika diketahui panjang $AM$ tegak lurus $BC$ (segitiga sama kaki), $AM = 8$, dan panjang segmen $BM = MC = 6$, berapakah panjang $MX$ jika $X$ berada pada perpanjangan garis $AM$?",
+            options: ["$4$", "$\dfrac{9}{2}$", "$5$", "$\dfrac{11}{2}$", "$\dfrac{21}{5}$"],
+            correct: 1
+        },
+        {
+            id: 10,
+            type: "pg",
+            question: "Diberikan segitiga $ABD$ siku-siku di $D$ dengan panjang sisi $BD = 5$ dan $AD = 12$. Titik $I$ adalah pusat lingkaran dalam (incenter) dari segitiga $ABD$. Jarak dari titik $D$ ke titik $I$ adalah $\dots$",
+            options: ["$2$", "$3$", "$2\sqrt{2}$", "$\dfrac{5}{2}$", "$\sqrt{7}$"],
+            correct: 2
+        },
+        // === ISIAN SINGKAT (11-20) - Hasil Bulat ===
+        {
+            id: 11,
+            type: "isian",
+            question: "Diberikan segitiga sama kaki $ABC$ dengan panjang sisi $AB = AC = 10$. Sebuah garis cevian $AD$ ditarik dari titik puncak $A$ menuju sisi alas $BC$. Jika diketahui panjang garis belahan tersebut adalah $AD = 8$ dan panjang potongan alas kiri $BD = 4$, tentukan panjang sisa potongan alas kanan $CD$.",
+            answer: "9"
+        },
+        {
+            id: 12,
+            type: "isian",
+            question: "Sebuah lingkaran berpusat di titik $O$ berada di dalam segitiga siku-siku $ABC$ ($\angle B = 90^{\circ}$). Lingkaran ini berdiameter tepat setengah dari sisi miring $AC$ dan diletakkan sedemikian rupa sehingga pusat lingkaran $O$ berada tepat di titik tengah sisi miring $AC$. Jika lingkaran tersebut menyinggung sisi tegak $AB$, tentukan besar sudut $\angle BCA$ dalam satuan derajat.",
+            answer: "60"
+        },
+        {
+            id: 13,
+            type: "isian",
+            question: "Diberikan segitiga lancip $ABC$ dengan lingkaran luar $\omega$. Garis bagi sudut $BAC$ memotong $\omega$ lagi di titik $D$. Titik $E$ terletak pada sisi $BC$ sedemikian rupa sehingga $AE \perp BC$. Garis $DE$ memotong $\omega$ lagi di titik $F$. Jika diketahui $\angle ABC = 70^{\circ}$ dan $\angle ACB = 50^{\circ}$, tentukan besar $\angle AFC$.",
+            answer: "27"
+        },
+        {
+            id: 14,
+            type: "isian",
+            question: "Diberikan segitiga siku-siku $ABC$ dengan $BC = 6$, $AC = 8$, dan $AB = 10$. Titik $D$ terletak pada sisi $AB$ dan titik $E$ terletak pada sisi $AC$ sedemikian rupa sehingga luas segitiga $ADE$ sama dengan setengah luas segitiga $ABC$. Jika panjang $AE$ dipatok bernilai $5$, tentukan panjang segmen $DE$.",
+            answer: "5"
+        },
+        {
+            id: 15,
+            type: "isian",
+            question: "Diberikan segitiga $ABC$ dengan panjang sisi $AB = 5$, $BC = 7$, dan $AC = 8$. Lingkaran dalam segitiga $ABC$ menyinggung sisi $BC$, $CA$, dan $AB$ berturut-turut di titik $D$, $E$, dan $F$. Garis bagi sudut $A$ memotong segmen garis $DF$ di titik $M$ dan memotong segmen garis $DE$ di titik $N$. Luas dari segitiga $AMN$ adalah $\dots$",
+            answer: "0"
+        },
+        {
+            id: 16,
+            type: "isian",
+            question: "Diberikan sebuah lingkaran dan titik $P$ yang berada di luar lingkaran tersebut. Dari titik $P$, ditarik garis singgung $PA$ yang menyinggung lingkaran di titik $A$, serta sebuah garis sekan (garis potong) yang memotong lingkaran di titik $C$ dan $D$ (dengan posisi titik $C$ terletak di antara $P$ dan $D$). Jika panjang garis singgung $PA = 12$ dan panjang segmen $CD = 7$, berapakah panjang dari segmen $PC$?",
+            answer: "9"
+        },
+        {
+            id: 17,
+            type: "isian",
+            question: "Diberikan segitiga $ABC$ siku-siku di $B$ dengan panjang sisi $AB = 30$ dan $BC = 40$. Di dalam segitiga tersebut, dibuat garis tinggi $BD$ yang tegak lurus terhadap $AC$ (titik $D$ berada pada $AC$) serta sebuah garis berat $BM$ (titik $M$ adalah titik tengah dari $AC$). Luas dari segitiga $BDM$ adalah $\dots$",
+            answer: "84"
+        },
+        {
+            id: 18,
+            type: "isian",
+            question: "Diberikan segitiga $ABC$ dengan panjang sisi $AB = 13$, $BC = 14$, dan $AC = 15$. Misalkan $O$ adalah titik pusat lingkaran luar segitiga $ABC$ dan $I$ adalah titik pusat lingkaran dalam segitiga $ABC$. Jika kuadrat jarak antara kedua pusat lingkaran tersebut ($OI^{2}$) dapat dinyatakan dalam bentuk pecahan paling sederhana $\dfrac{a}{b}$ dengan $a$, $b$ adalah bilangan bulat positif yang saling relatif prima, tentukan nilai dari $a$.",
+            answer: "65"
+        },
+        {
+            id: 19,
+            type: "isian",
+            question: "Diberikan trapesium $ABCD$ dengan sisi $AB$ sejajar dengan $CD$. Diketahui panjang keempat sisinya adalah $AB = 10$, $BC = 15$, $CD = 24$, dan $DA = 13$. Misalkan titik $M$ adalah titik tengah dari sisi $AD$ dan titik $N$ adalah titik tengah dari sisi $BC$. Luas dari segiempat $ABNM$ adalah $\dots$",
+            answer: "81"
+        },
+        {
+            id: 20,
+            type: "isian",
+            question: "Pada sebuah persegi panjang $ABCD$, panjang sisi $AB = 20$ dan $BC = 15$. Titik $P$ dan $Q$ terletak pada diagonal ruang/bidang $AC$ sedemikian rupa sehingga garis $BP$ tegak lurus terhadap $AC$ dan garis $DQ$ juga tegak lurus terhadap $AC$. Panjang dari segmen garis $PQ$ adalah $\dots$",
+            answer: "7"
+        }
+    ];
+
+    // ==================== STATE ====================
+    let currentQ = 0;
+    let answers = {};
+    let flagged = new Set();
+    let violations = 0;
+    let timeLeft = EXAM_DURATION;
+    let timerInterval;
+    let examSubmitted = false;
+    let userName = "";
+    let tokenValid = false;
+
+    // ==================== TOKEN VALIDATION ====================
+    function validateToken() {
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get("token");
+
+        console.log("=== CBT DEBUG TO1 ===");
+        console.log("Hostname:", window.location.hostname);
+        console.log("Path:", window.location.pathname);
+        console.log("Token from URL:", token ? "ADA" : "TIDAK ADA");
+
+        if (token) {
+            try {
+                const decoded = JSON.parse(atob(token));
+                console.log("Decoded token:", decoded);
+                if (decoded.n && decoded.t && (Date.now() - decoded.t) < TOKEN_EXPIRY) {
+                    userName = decoded.n;
+                    tokenValid = true;
+                    return true;
+                }
+            } catch (e) {
+                console.log("Token decode error:", e);
+            }
+        }
+
+        const saved = localStorage.getItem("to1_token");
+        if (saved) {
+            try {
+                const decoded = JSON.parse(atob(saved));
+                if (decoded.n && decoded.t && (Date.now() - decoded.t) < TOKEN_EXPIRY) {
+                    userName = decoded.n;
+                    tokenValid = true;
+                    return true;
+                }
+            } catch (e) {}
+        }
+
+        return false;
+    }
+
+    // ==================== INIT ====================
+    function init() {
+        if (!validateToken()) {
+            document.getElementById("access-denied").classList.add("active");
+            return;
+        }
+
+        document.getElementById("main-header").style.display = "flex";
+        document.getElementById("main-content").style.display = "block";
+        document.getElementById("user-info").textContent = "Peserta: " + userName;
+
+        const wm = document.getElementById("watermark");
+        for (let i = 0; i < 15; i++) {
+            const span = document.createElement("span");
+            span.textContent = userName + " | " + new Date().toLocaleString("id-ID");
+            wm.appendChild(span);
+        }
+
+        renderNav();
+        loadQuestion(0);
+        startTimer();
+        initSecurity();
+
+        if (window.MathJax && MathJax.typesetPromise) {
+            MathJax.typesetPromise();
+        }
+    }
+
+    // ==================== RENDER ====================
+    function renderNav() {
+        const nav = document.getElementById("question-nav");
+        nav.innerHTML = "";
+        questions.forEach((q, i) => {
+            const btn = document.createElement("button");
+            btn.className = "q-nav-btn";
+            btn.textContent = i + 1;
+            if (i === 0) btn.classList.add("current");
+            if (answers[q.id] !== undefined) btn.classList.add("answered");
+            if (flagged.has(q.id)) btn.classList.add("flagged");
+            btn.onclick = () => loadQuestion(i);
+            nav.appendChild(btn);
+        });
+    }
+
+    function loadQuestion(idx) {
+        currentQ = idx;
+        const q = questions[idx];
+        const container = document.getElementById("question-container");
+
+        let html = "<div class=\"question-box\">";
+        html += "<div class=\"question-number\">Soal " + q.id;
+        html += "<span class=\"type-badge " + (q.type === "pg" ? "type-pg" : "type-isian") + "\">";
+        html += (q.type === "pg" ? "Pilihan Ganda" : "Isian Singkat") + "</span></div>";
+        html += "<div class=\"question-text\">" + q.question + "</div>";
+
+        if (q.type === "pg") {
+            html += "<div class=\"options\">";
+            const letters = ["A", "B", "C", "D", "E"];
+            q.options.forEach((opt, i) => {
+                const selected = answers[q.id] === i ? "selected" : "";
+                html += "<div class=\"option " + selected + "\" onclick=\"selectOption(" + i + ")\">";
+                html += "<div class=\"option-letter\">" + letters[i] + "</div>";
+                html += "<div>" + opt + "</div></div>";
+            });
+            html += "</div>";
+        } else {
+            const val = answers[q.id] || "";
+            html += "<input type=\"text\" class=\"input-answer\" id=\"input-" + q.id + "\" ";
+            html += "value=\"" + val + "\" placeholder=\"Ketik jawaban Anda...\" ";
+            html += "oninput=\"saveInput(" + q.id + ", this.value)\">";
+        }
+
+        html += "<button class=\"flag-btn " + (flagged.has(q.id) ? "flagged" : "") + "\" ";
+        html += "onclick=\"toggleFlag(" + q.id + ")\">";
+        html += (flagged.has(q.id) ? "&#10003; Diberi Tanda" : "&#9873; Beri Tanda") + "</button>";
+        html += "</div>";
+
+        container.innerHTML = html;
+
+        document.querySelectorAll(".q-nav-btn").forEach((btn, i) => {
+            btn.classList.toggle("current", i === idx);
+        });
+
+        document.getElementById("btn-prev").disabled = idx === 0;
+        document.getElementById("btn-next").style.display = idx === questions.length - 1 ? "none" : "inline-block";
+        document.getElementById("btn-submit").style.display = idx === questions.length - 1 ? "inline-block" : "none";
+
+        if (window.MathJax && MathJax.typesetPromise) {
+            MathJax.typesetPromise([container]);
+        }
+    }
+
+    function selectOption(optIdx) {
+        const q = questions[currentQ];
+        answers[q.id] = optIdx;
+        loadQuestion(currentQ);
+        updateNavAnswered(q.id);
+    }
+
+    function saveInput(qid, value) {
+        answers[qid] = value.trim();
+        updateNavAnswered(qid);
+    }
+
+    function updateNavAnswered(qid) {
+        const idx = questions.findIndex(q => q.id === qid);
+        const btn = document.querySelectorAll(".q-nav-btn")[idx];
+        if (btn) {
+            if (answers[qid] !== undefined && answers[qid] !== "") {
+                btn.classList.add("answered");
+            } else {
+                btn.classList.remove("answered");
+            }
+        }
+    }
+
+    function toggleFlag(qid) {
+        if (flagged.has(qid)) flagged.delete(qid);
+        else flagged.add(qid);
+        loadQuestion(currentQ);
+        renderNav();
+    }
+
+    function prevQuestion() {
+        if (currentQ > 0) loadQuestion(currentQ - 1);
+    }
+
+    function nextQuestion() {
+        if (currentQ < questions.length - 1) loadQuestion(currentQ + 1);
+    }
+
+    // ==================== TIMER ====================
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                submitExam(true);
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const h = Math.floor(timeLeft / 3600);
+        const m = Math.floor((timeLeft % 3600) / 60);
+        const s = timeLeft % 60;
+        const timer = document.getElementById("timer");
+        timer.textContent = String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+
+        timer.classList.remove("warning", "danger");
+        if (timeLeft < 300) timer.classList.add("danger");
+        else if (timeLeft < 900) timer.classList.add("warning");
+    }
+
+    // ==================== SUBMIT ====================
+    function submitExam(auto = false) {
+        if (examSubmitted) return;
+        if (!auto && !confirm("Yakin ingin mengumpulkan jawaban?")) return;
+
+        examSubmitted = true;
+        clearInterval(timerInterval);
+
+        let correct = 0;
+        let answered = 0;
+        questions.forEach(q => {
+            if (answers[q.id] !== undefined && answers[q.id] !== "") {
+                answered++;
+                if (q.type === "pg") {
+                    if (answers[q.id] === q.correct) correct++;
+                } else {
+                    const userAns = String(answers[q.id]).toLowerCase().replace(/\s/g, "");
+                    const correctAns = String(q.answer).toLowerCase().replace(/\s/g, "");
+                    if (userAns === correctAns) correct++;
+                }
+            }
+        });
+
+        const score = correct * 5;
+        document.getElementById("final-score").textContent = score;
+        document.getElementById("result-detail").innerHTML = 
+            "Benar: " + correct + " dari " + questions.length + " soal<br>" +
+            "Dijawab: " + answered + " soal<br>" +
+            "Pelanggaran: " + violations + " kali<br>" +
+            "Sisa waktu: " + document.getElementById("timer").textContent;
+        document.getElementById("result-modal").classList.add("active");
+
+        const result = {
+            name: userName,
+            score: score,
+            correct: correct,
+            total: questions.length,
+            answered: answered,
+            violations: violations,
+            timeLeft: timeLeft,
+            timestamp: Date.now(),
+            answers: answers
+        };
+        localStorage.setItem("to1_results", JSON.stringify(result));
+        console.log("Result saved:", result);
+    }
+
+    function finishExam() {
+        document.getElementById("result-modal").classList.remove("active");
+        document.getElementById("main-content").innerHTML = 
+            "<div style=\"text-align:center;padding:50px;\">" +
+            "<h2 style=\"color:#27ae60;\">Ujian Selesai</h2>" +
+            "<p style=\"color:#bdc3c7;margin-top:20px;\">Terima kasih telah mengikuti Try Out 1.</p>" +
+            "<p style=\"color:#bdc3c7;\">Hasil telah tersimpan. Silakan tutup browser.</p>" +
+            "</div>";
+        document.getElementById("main-header").style.display = "none";
+    }
+
+    function dismissSecurity() {
+        document.getElementById("security-overlay").classList.remove("active");
+        if (violations >= MAX_VIOLATIONS) {
+            submitExam(true);
+        }
+    }
+
+    // ==================== SECURITY ====================
+    function initSecurity() {
+        document.addEventListener("contextmenu", e => {
+            e.preventDefault();
+            addViolation("Klik kanan (Right Click)");
+        });
+
+        document.addEventListener("copy", e => {
+            e.preventDefault();
+            addViolation("Copy (Ctrl+C)");
+        });
+        document.addEventListener("paste", e => {
+            e.preventDefault();
+            addViolation("Paste (Ctrl+V)");
+        });
+        document.addEventListener("cut", e => {
+            e.preventDefault();
+            addViolation("Cut (Ctrl+X)");
+        });
+
+        document.addEventListener("keydown", e => {
+            const key = e.key.toLowerCase();
+            const ctrl = e.ctrlKey || e.metaKey;
+
+            if (key === "printscreen" || key === "snapshot") {
+                e.preventDefault();
+                addViolation("PrintScreen");
+                navigator.clipboard.writeText("").catch(()=>{});
+            }
+
+            if (ctrl) {
+                const blocked = ["c", "v", "x", "p", "s", "a", "u"];
+                if (blocked.includes(key)) {
+                    e.preventDefault();
+                    addViolation("Ctrl+" + key.toUpperCase());
+                }
+                if (key === "shift" && (e.key === "i" || e.key === "j" || e.key === "c")) {
+                    e.preventDefault();
+                    addViolation("DevTools shortcut");
+                }
+            }
+
+            if (key === "f12") {
+                e.preventDefault();
+                addViolation("F12 (DevTools)");
+            }
+        });
+
+        let blurCount = 0;
+        window.addEventListener("blur", () => {
+            blurCount++;
+            if (blurCount > 1) {
+                addViolation("Pindah tab/jendela (Alt+Tab)");
+            }
+        });
+
+        window.addEventListener("beforeunload", e => {
+            if (!examSubmitted) {
+                e.preventDefault();
+                e.returnValue = "Ujian sedang berlangsung. Yakin ingin keluar?";
+                return e.returnValue;
+            }
+        });
+
+        function enforceFullscreen() {
+            if (!document.fullscreenElement && !examSubmitted) {
+                try {
+                    document.documentElement.requestFullscreen();
+                } catch(e) {}
+            }
+        }
+        document.addEventListener("fullscreenchange", () => {
+            if (!document.fullscreenElement && !examSubmitted) {
+                addViolation("Keluar Fullscreen");
+                setTimeout(enforceFullscreen, 100);
+            }
+        });
+        setTimeout(enforceFullscreen, 1000);
+
+        setInterval(() => {
+            navigator.clipboard.writeText("").catch(()=>{});
+        }, 300);
+
+        // Anti screen recording: flash overlay (interval 8 detik, sangat halus)
+        setInterval(() => {
+            const flash = document.getElementById("flash-overlay");
+            flash.style.opacity = "0.08";
+            setTimeout(() => flash.style.opacity = "0", 80);
+        }, 8000);
+
+        setInterval(() => {
+            const widthThreshold = window.outerWidth - window.innerWidth > 160;
+            const heightThreshold = window.outerHeight - window.innerHeight > 160;
+            if (widthThreshold || heightThreshold) {
+                addViolation("DevTools terdeteksi (window size)");
+            }
+        }, 1000);
+
+        setInterval(() => {
+            const start = performance.now();
+            debugger;
+            const end = performance.now();
+            if (end - start > 100) {
+                addViolation("Debugger terdeteksi");
+            }
+        }, 2000);
+    }
+
+    function addViolation(reason) {
+        if (examSubmitted) return;
+        violations++;
+        document.getElementById("violation-count").textContent = "Pelanggaran: " + violations + "/" + MAX_VIOLATIONS;
+        document.getElementById("violation-count").classList.add("active");
+        document.getElementById("v-count").textContent = violations;
+        document.getElementById("security-msg").textContent = "Pelanggaran: " + reason;
+        document.getElementById("security-overlay").classList.add("active");
+
+        if (violations >= MAX_VIOLATIONS) {
+            document.getElementById("security-btn").textContent = "Ujian Dikunci";
+            document.getElementById("security-btn").disabled = true;
+        }
+    }
+
+    window.onload = init;
+
+    </script>
+</body>
+</html>
