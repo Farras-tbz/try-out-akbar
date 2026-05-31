@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CBT Try Out Akbar - Olimpiade Matematika</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
         window.MathJax = {
             tex: {
-                inlineMath: [["$", "$"], ["\(", "\)"]],
-                displayMath: [["$$", "$$"], ["\[", "\]"]],
+                inlineMath: [["$", "$"], ["\\(", "\\)"]],
+                displayMath: [["$$", "$$"], ["\\[", "\\]"]],
                 processEscapes: true,
                 processEnvironments: true
             },
@@ -251,9 +250,6 @@
         .type-pg { background: #3498db; }
         .type-isian { background: #9b59b6; }
     </style>
-<base target="_blank">
-<base target="_blank">
-<base target="_blank">
 </head>
 <body>
     <div class="watermark" id="watermark"></div>
@@ -306,7 +302,6 @@
     </main>
 
     <script>
-
     // ==================== KONFIGURASI ====================
     const EXAM_DURATION = 7200;
     const MAX_VIOLATIONS = 2;
@@ -318,70 +313,75 @@
         {
             id: 1,
             type: "pg",
-            question: Misalkan $P(x) = x^4 + ax^3 + bx^2 + cx + d$ adalah polinomial berderajat 4 dengan koefisien bilangan bulat. Diketahui bahwa $P(1) = 1$, $P(2) = 3$, $P(3) = 5$, dan terdapat suatu bilangan prima $p$ sedemikian sehingga $P(p) = p^2 + p + 1$. Jika $d < 0$ dan nilai $|d|$ seminimum mungkin, tentukan nilai dari $P(0)$.,
+            question: `Misalkan $P(x) = x^4 + ax^3 + bx^2 + cx + d$ adalah polinomial berderajat 4 dengan koefisien bilangan bulat. Diketahui bahwa $P(1) = 1$, $P(2) = 3$, $P(3) = 5$, dan terdapat suatu bilangan prima $p$ sedemikian sehingga $P(p) = p^2 + p + 1$. Jika $d < 0$ dan nilai $|d|$ seminimum mungkin, tentukan nilai dari $P(0)$.`,
             options: ["$15$", "$17$", "$19$", "$21$", "$23$"],
             correct: 2
         },
         {
             id: 2,
             type: "pg",
-            question: Diberikan barisan bilangan real $x_1, x_2, \\dots, x_{2026}$ yang memenuhi persamaan konjoin berikut:$$\\sum_{i=1}^{2026} x_i = 2026 \\quad \\text{dan} \\quad \\sum_{i=1}^{2026} x_i^2 = 2026 + 24$$Jika $M$ adalah banyaknya bilangan dalam barisan tersebut yang nilainya dapat melebihi $2$, tentukan nilai maksimum yang mungkin dari $M$.,
+            question: `Diberikan barisan bilangan real $x_1, x_2, \\dots, x_{2026}$ yang memenuhi persamaan konjoin berikut:
+$$\\sum_{i=1}^{2026} x_i = 2026 \\quad \\text{dan} \\quad \\sum_{i=1}^{2026} x_i^2 = 2026 + 24$$
+Jika $M$ adalah banyaknya bilangan dalam barisan tersebut yang nilainya dapat melebihi $2$, tentukan nilai maksimum yang mungkin dari $M$.`,
             options: ["$19$", "$21$", "$23$", "$25$", "$27$"],
             correct: 2
         },
         {
             id: 3,
             type: "pg",
-            question: Tentukan banyaknya pasangan bilangan bulat $(m, n)$ dengan $n > 0$ yang memenuhi persamaan diophantine berderajat tinggi berikut:$$m^5 - 4m^3 + 4m = n^2 + 2024$$,
+            question: `Tentukan banyaknya pasangan bilangan bulat $(m, n)$ dengan $n > 0$ yang memenuhi persamaan diophantine berderajat tinggi berikut:
+$$m^5 - 4m^3 + 4m = n^2 + 2024$$`,
             options: ["$-2$", "$-1$", "$0$", "$1$", "$2$"],
             correct: 2
         },
         {
             id: 4,
             type: "pg",
-            question: Misalkan $a$ dan $b$ adalah panjang sisi-sisi tegak sebuah segitiga siku-siku dengan panjang hipotenusa $c$, di mana $a, b, c$ semuanya adalah bilangan asli. Sebuah lingkaran dalam menyinggung ketiga sisi segitiga tersebut. Jika rasio antara luas segitiga dengan keliling segitiga tersebut secara numerik merupakan bilangan prima $p$, tentukan nilai dari $c - (a + b)$ ketika jari-jari lingkaran dalam segitiga tersebut mencapai nilai minimum yang mungkin.,
+            question: `Misalkan $a$ dan $b$ adalah panjang sisi-sisi tegak sebuah segitiga siku-siku dengan panjang hipotenusa $c$, di mana $a, b, c$ semuanya adalah bilangan asli. Sebuah lingkaran dalam menyinggung ketiga sisi segitiga tersebut. Jika rasio antara luas segitiga dengan keliling segitiga tersebut secara numerik merupakan bilangan prima $p$, tentukan nilai dari $c - (a + b)$ ketika jari-jari lingkaran dalam segitiga tersebut mencapai nilai minimum yang mungkin.`,
             options: ["$-6$", "$-5$", "$-4$", "$-3$", "$-2$"],
             correct: 2
         },
         {
             id: 5,
             type: "pg",
-            question: Sebuah papan catur berukuran $1 \\times 100$ diisi dengan angka-angka dari himpunan $\\{1, 2, 3\\}$. Kita ingin mewarnai papan tersebut sedemikian sehingga untuk setiap sub-papan berukuran $1 \\times 3$ yang berurutan, jumlah ketiga angka di dalamnya habis dibagi 3. Tentukan nilai dari banyak cara penyusunan konfigurasi ini jika ujung kiri papan harus diisi oleh angka $1$.,
+            question: `Sebuah papan catur berukuran $1 \\times 100$ diisi dengan angka-angka dari himpunan $\\{1, 2, 3\\}$. Kita ingin mewarnai papan tersebut sedemikian sehingga untuk setiap sub-papan berukuran $1 \\times 3$ yang berurutan, jumlah ketiga angka di dalamnya habis dibagi 3. Tentukan nilai dari banyak cara penyusunan konfigurasi ini jika ujung kiri papan harus diisi oleh angka $1$.`,
             options: ["$75$", "$78$", "$81$", "$84$", "$87$"],
             correct: 2
         },
         {
             id: 6,
             type: "pg",
-            question: Misalkan $x, y, z$ adalah bilangan-bilangan real positif yang memenuhi sistem persamaan:$$x^2 + xy + \\frac{y^2}{3} = 25, \\quad \\frac{y^2}{3} + z^2 = 9, \\quad z^2 + zx + x^2 = 16$$Tentukan nilai dari bentuk aljabar $xy + 2yz + 3zx$.,
+            question: `Misalkan $x, y, z$ adalah bilangan-bilangan real positif yang memenuhi sistem persamaan:
+$$x^2 + xy + \\frac{y^2}{3} = 25, \\quad \\frac{y^2}{3} + z^2 = 9, \\quad z^2 + zx + x^2 = 16$$
+Tentukan nilai dari bentuk aljabar $xy + 2yz + 3zx$.`,
             options: ["$20\\sqrt{3}$", "$22\\sqrt{3}$", "$24\\sqrt{3}$", "$26\\sqrt{3}$", "$28\\sqrt{3}$"],
             correct: 2
         },
         {
             id: 7,
             type: "pg",
-            question: Diberikan segitiga lancip $ABC$ dengan panjang sisi $BC = a, AC = b,$ dan $AB = c$. Titik $D$ terletak pada $BC$ sedemikian sehingga $AD$ adalah garis bagi dalam $\\angle BAC$. Jika panjang $AD = d$, dan diketahui hubungan aljabar $d^2 = bc \\left(1 - \\frac{a^2}{(b+c)^2}\\right)$, carilah nilai dari $\\cos(\\angle BAC)$ apabila ditentukan bahwa segitiga tersebut memenuhi hubungan khusus $a^2 = b^2 + bc$.,
+            question: `Diberikan segitiga lancip $ABC$ dengan panjang sisi $BC = a, AC = b,$ dan $AB = c$. Titik $D$ terletak pada $BC$ sedemikian sehingga $AD$ adalah garis bagi dalam $\\angle BAC$. Jika panjang $AD = d$, dan diketahui hubungan aljabar $d^2 = bc \\left(1 - \\frac{a^2}{(b+c)^2}\\right)$, carilah nilai dari $\\cos(\\angle BAC)$ apabila ditentukan bahwa segitiga tersebut memenuhi hubungan khusus $a^2 = b^2 + bc$.`,
             options: ["$\\frac{1}{5}$", "$\\frac{1}{4}$", "$\\frac{1}{3}$", "$\\frac{1}{2}$", "$\\frac{2}{3}$"],
             correct: 2
         },
         {
             id: 8,
             type: "pg",
-            question: Diberikan sebuah persegi panjang $ABCD$ dengan panjang sisi $AB = 20$ dan $BC = 15$. Sebuah titik $P$ dipilih secara acak di dalam persegi panjang. Jarak minimum dari titik $P$ ke empat sisi persegi panjang dinyatakan berturut-turut sebagai $d_1, d_2, d_3, d_4$. Jika diketahui $d_1 \\cdot d_2 \\cdot d_3 \\cdot d_4$ mencapai nilai maksimumnya, tentukan rasio luas lingkaran luar segitiga $APB$ terhadap luas persegi panjang $ABCD$.,
+            question: `Diberikan sebuah persegi panjang $ABCD$ dengan panjang sisi $AB = 20$ dan $BC = 15$. Sebuah titik $P$ dipilih secara acak di dalam persegi panjang. Jarak minimum dari titik $P$ ke empat sisi persegi panjang dinyatakan berturut-turut sebagai $d_1, d_2, d_3, d_4$. Jika diketahui $d_1 \\cdot d_2 \\cdot d_3 \\cdot d_4$ mencapai nilai maksimumnya, tentukan rasio luas lingkaran luar segitiga $APB$ terhadap luas persegi panjang $ABCD$.`,
             options: ["$\\frac{23\\pi}{48}$", "$\\frac{24\\pi}{48}$", "$\\frac{25\\pi}{48}$", "$\\frac{26\\pi}{48}$", "$\\frac{27\\pi}{48}$"],
             correct: 2
         },
         {
             id: 9,
             type: "pg",
-            question: Misalkan $S = \\{1, 2, 3, \\dots, 50\\}$. Kita ingin memilih sebuah himpunan bagian $A \\subseteq S$ sedemikian sehingga tidak ada dua elemen di $A$ yang jumlahnya merupakan kelipatan 7. Jika ukuran maksimum dari himpunan $A$ adalah $M$, carilah peluang bahwa jika diambil 2 anggota dari $A$ secara acak, hasil kalinya bernilai genap.,
+            question: `Misalkan $S = \\{1, 2, 3, \\dots, 50\\}$. Kita ingin memilih sebuah himpunan bagian $A \\subseteq S$ sedemikian sehingga tidak ada dua elemen di $A$ yang jumlahnya merupakan kelipatan 7. Jika ukuran maksimum dari himpunan $A$ adalah $M$, carilah peluang bahwa jika diambil 2 anggota dari $A$ secara acak, hasil kalinya bernilai genap.`,
             options: ["$\\frac{27}{44}$", "$\\frac{28}{44}$", "$\\frac{29}{44}$", "$\\frac{30}{44}$", "$\\frac{31}{44}$"],
             correct: 2
         },
         {
             id: 10,
             type: "pg",
-            question: Sebuah komputer menampilkan barisan bilangan yang diatur dengan aturan rekursif probabilistik. Mulai dari $x_0 = 1$, nilai berikutnya adalah $x_{n+1} = x_n + \\frac{1}{2x_n}$ dengan peluang $\\frac{1}{2}$, atau $x_{n+1} = x_n - \\frac{1}{2x_n}$ dengan peluang $\\frac{1}{2}$. Tentukan nilai harapan (expected value) dari $x_{10}^2$.,
+            question: `Sebuah komputer menampilkan barisan bilangan yang diatur dengan aturan rekursif probabilistik. Mulai dari $x_0 = 1$, nilai berikutnya adalah $x_{n+1} = x_n + \\frac{1}{2x_n}$ dengan peluang $\\frac{1}{2}$, atau $x_{n+1} = x_n - \\frac{1}{2x_n}$ dengan peluang $\\frac{1}{2}$. Tentukan nilai harapan (expected value) dari $x_{10}^2$.`,
             options: ["$\\frac{9}{2}$", "$\\frac{10}{2}$", "$\\frac{11}{2}$", "$\\frac{12}{2}$", "$\\frac{13}{2}$"],
             correct: 2
         },
@@ -389,61 +389,70 @@
         {
             id: 11,
             type: "isian",
-            question: Tentukan banyaknya pasangan bilangan bulat $(x, y)$ yang memenuhi persamaan berbentuk pecahan simetris berikut ini:$$\\frac{x^2 + y^2}{xy - 1} = 3$$,
+            question: `Tentukan banyaknya pasangan bilangan bulat $(x, y)$ yang memenuhi persamaan berbentuk pecahan simetris berikut ini:
+$$\\frac{x^2 + y^2}{xy - 1} = 3$$`,
             answer: "0"
         },
         {
             id: 12,
             type: "isian",
-            question: Misalkan $a, b, c$ adalah bilangan real positif yang memenuhi sistem persamaan:$$a^2 + ab + b^2 = 25$$$$b^2 + bc + c^2 = 49$$$$c^2 + ca + a^2 = 64$$Jika nilai dari $(a+b+c)^2$ dapat dituliskan dalam bentuk $m + n\\sqrt{3}$ untuk suatu bilangan bulat $m$ dan $n$, tentukan nilai dari $m - n$.,
+            question: `Misalkan $a, b, c$ adalah bilangan real positif yang memenuhi sistem persamaan:
+$$a^2 + ab + b^2 = 25$$
+$$b^2 + bc + c^2 = 49$$
+$$c^2 + ca + a^2 = 64$$
+Jika nilai dari $(a+b+c)^2$ dapat dituliskan dalam bentuk $m + n\\sqrt{3}$ untuk suatu bilangan bulat $m$ dan $n$, tentukan nilai dari $m - n$.`,
             answer: "129"
         },
         {
             id: 13,
             type: "isian",
-            question: Diberikan segitiga $ABC$ dengan panjang sisi $BC = 5, AC = 6,$ dan $AB = 7$. Titik $D$ dan $E$ berturut-turut terletak pada sisi $AB$ dan $AC$ sedemikian sehingga garis $DE$ menyinggung lingkaran dalam segitiga $ABC$. Jika keliling segitiga $ADE$ dapat dinyatakan dalam bentuk rasional paling sederhana $\\frac{p}{q}$, tentukan nilai dari $p + q$.,
+            question: `Diberikan segitiga $ABC$ dengan panjang sisi $BC = 5, AC = 6,$ dan $AB = 7$. Titik $D$ dan $E$ berturut-turut terletak pada sisi $AB$ dan $AC$ sedemikian sehingga garis $DE$ menyinggung lingkaran dalam segitiga $ABC$. Jika keliling segitiga $ADE$ dapat dinyatakan dalam bentuk rasional paling sederhana $\\frac{p}{q}$, tentukan nilai dari $p + q$.`,
             answer: "11"
         },
         {
             id: 14,
             type: "isian",
-            question: Pada segitiga siku-siku $ABC$ dengan $\\angle B = 90^\\circ$, panjang sisi $AB$ dan $BC$ adalah bilangan bulat. Sebuah titik $D$ dipilih pada $AC$ dan $E$ pada $BC$ sedemikian rupa sehingga $DE \\perp BC$. Jika panjang $AE$, $DE$, dan $CE$ seluruhnya merupakan bilangan bulat berurutan, tentukan nilai keliling minimum yang mungkin dari segitiga $ABC$.,
+            question: `Pada segitiga siku-siku $ABC$ dengan $\\angle B = 90^\\circ$, panjang sisi $AB$ dan $BC$ adalah bilangan bulat. Sebuah titik $D$ dipilih pada $AC$ dan $E$ pada $BC$ sedemikian rupa sehingga $DE \\perp BC$. Jika panjang $AE$, $DE$, dan $CE$ seluruhnya merupakan bilangan bulat berurutan, tentukan nilai keliling minimum yang mungkin dari segitiga $ABC$.`,
             answer: "36"
         },
         {
             id: 15,
             type: "isian",
-            question: Diberikan sebuah 12-gon (poligon beraturan ber-sisi 12). Kita ingin memilih 3 titik sudut dari poligon ini untuk membentuk sebuah segitiga. Tentukan banyaknya cara memilih ketiga titik tersebut sedemikian rupa sehingga segitiga yang terbentuk bukanlah segitiga siku-siku maupun segitiga sama kaki.,
+            question: `Diberikan sebuah 12-gon (poligon beraturan ber-sisi 12). Kita ingin memilih 3 titik sudut dari poligon ini untuk membentuk sebuah segitiga. Tentukan banyaknya cara memilih ketiga titik tersebut sedemikian rupa sehingga segitiga yang terbentuk bukanlah segitiga siku-siku maupun segitiga sama kaki.`,
             answer: "120"
         },
         {
             id: 16,
             type: "isian",
-            question: Tentukan bilangan asli $n$ terkecil yang lebih besar dari 1 sedemikian sehingga bentuk aljabar berikut:$$\\frac{n^5 + n^4 + 1}{n^2 + n + 1}$$menghasilkan sebuah bilangan kuadrat sempurna.,
+            question: `Tentukan bilangan asli $n$ terkecil yang lebih besar dari 1 sedemikian sehingga bentuk aljabar berikut:
+$$\\frac{n^5 + n^4 + 1}{n^2 + n + 1}$$
+menghasilkan sebuah bilangan kuadrat sempurna.`,
             answer: "8"
         },
         {
             id: 17,
             type: "isian",
-            question: Tentukan banyaknya bilangan asli berdigit empat $\\overline{abcd}$ (dengan $a \\neq 0$) yang memenuhi syarat bahwa $\\overline{abcd}$ habis dibagi oleh hasil kali digit-digitnya, yaitu $a \\times b \\times c \\times d$, dan tidak ada satu pun digit dari bilangan tersebut yang bernilai $0$.,
+            question: `Tentukan banyaknya bilangan asli berdigit empat $\\overline{abcd}$ (dengan $a \\neq 0$) yang memenuhi syarat bahwa $\\overline{abcd}$ habis dibagi oleh hasil kali digit-digitnya, yaitu $a \\times b \\times c \\times d$, dan tidak ada satu pun digit dari bilangan tersebut yang bernilai $0$.`,
             answer: "7"
         },
         {
             id: 18,
             type: "isian",
-            question: Tentukan banyaknya fungsi $f: \\{1, 2, 3, 4, 5\\} \\to \\{1, 2, 3, 4, 5\\}$ yang memenuhi komposisi aljabar fungsi berikut:$$f(f(x)) - 2f(x) + x = 0$$untuk setiap $x \\in \\{1, 2, 3, 4, 5\\}$.,
+            question: `Tentukan banyaknya fungsi $f: \\{1, 2, 3, 4, 5\\} \\to \\{1, 2, 3, 4, 5\\}$ yang memenuhi komposisi aljabar fungsi berikut:
+$$f(f(x)) - 2f(x) + x = 0$$
+untuk setiap $x \\in \\{1, 2, 3, 4, 5\\}$.`,
             answer: "1"
         },
         {
             id: 19,
             type: "isian",
-            question: Ada 10 orang siswa yang duduk melingkar pada sebuah meja bundar. Setiap siswa memikirkan sebuah bilangan bulat tersembunyi dan membisikkannya kepada dua orang tetangga di sebelah kiri dan kanannya. Setelah itu, setiap siswa mengumumkan jumlah dari dua angka yang dibisikkan kepadanya. Jika angka-angka yang diumumkan berturut-turut searah jarum jam adalah $1, 2, 3, 4, 5, 6, 7, 8, 9, 10$, tentukan nilai mutlak dari selisih angka terbesar dan terkecil yang dipikirkan oleh para siswa.,
+            question: `Ada 10 orang siswa yang duduk melingkar pada sebuah meja bundar. Setiap siswa memikirkan sebuah bilangan bulat tersembunyi dan membisikkannya kepada dua orang tetangga di sebelah kiri dan kanannya. Setelah itu, setiap siswa mengumumkan jumlah dari dua angka yang dibisikkan kepadanya. Jika angka-angka yang diumumkan berturut-turut searah jarum jam adalah $1, 2, 3, 4, 5, 6, 7, 8, 9, 10$, tentukan nilai mutlak dari selisih angka terbesar dan terkecil yang dipikirkan oleh para siswa.`,
             answer: "5"
         },
         {
             id: 20,
             type: "isian",
-            question: Di dalam sebuah ruangan berbentuk kubus berukuran $4 \\times 4 \\times 4$ yang tersusun atas 64 unit kubus satuan kecil, seekor semut ingin bergerak dari titik sudut kiri-bawah-depan ke titik sudut kanan-atas-belakang. Semut hanya dapat bergerak melintasi sisi-sisi kubus satuan ke arah kanan, atas, atau belakang. Tentukan banyaknya rute terpendek yang dapat dilalui semut tersebut jika ia dilarang melewati titik pusat dari kubus besar tersebut.,
+            question: `Di dalam sebuah ruangan berbentuk kubus berukuran $4 \\times 4 \\times 4$ yang tersusun atas 64 unit kubus satuan kecil, seekor semut ingin bergerak dari titik sudut kiri-bawah-depan ke titik sudut kanan-atas-belakang. Semut hanya dapat bergerak melintasi sisi-sisi kubus satuan ke arah kanan, atas, atau belakang. Tentukan banyaknya rute terpendek yang dapat dilalui semut tersebut jika ia dilarang melewati titik pusat dari kubus besar tersebut.`,
             answer: "2310"
         }
     ];
